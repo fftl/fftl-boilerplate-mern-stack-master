@@ -10,20 +10,31 @@ function LandingPage() {
     //setMovies를 이용해 데이터를 넣어줍니다.
     const [Movies, setMovies] = useState([]);
     const [MainMovieImage, setMainMovieImage] = useState(null);
+    const [CurrentPage, setCurrentPage] = useState(0);
 
     //api를 이용해서 데이터를 가져옵니다.
     useEffect(() => {
-        const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+        const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+        fetchMovies(endpoint);
+    }, []);
 
+    const loadMoreItems = () => {
+        const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+        fetchMovies(endpoint);
+    };
+
+    const fetchMovies = endpoint => {
         fetch(endpoint)
             .then(response => response.json())
             .then(response => {
                 //setMovies를 이용하여 Movies state에 가져온 데이터가 들어가게 됩니다.
                 console.log(response);
-                setMovies([...response.results]);
+                // setMovies([...response.results]); 덮어 씌우기
+                setMovies([...Movies, ...response.results]); //추가하기
                 setMainMovieImage(response.results[0]);
+                setCurrentPage(response.page);
             });
-    }, []);
+    };
 
     return (
         <>
@@ -58,7 +69,7 @@ function LandingPage() {
                     </Row>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <button> Load More </button>
+                    <button onClick={loadMoreItems}> Load More </button>
                 </div>
             </div>
         </>
