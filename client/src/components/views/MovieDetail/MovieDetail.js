@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { API_URL, API_KEY, IMAGE_BASE_URL } from '../../Config';
 import MainImage from '../LandingPage/Sections/MainImage';
 import MovieInfo from './Sections/MovieInfo';
+import Favorite from './Sections/Favorite';
 
 function MovieDetail(props) {
     let movieId = props.match.params.movieId;
@@ -24,6 +25,10 @@ function MovieDetail(props) {
             <MainImage image={`${IMAGE_BASE_URL}w1280/${Movie.backdrop_path}`} title={Movie.original_title} text={Movie.overview} />
             {/* Body */}
             <div style={{ width: '85%', margin: '1rem auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Favorite movieInfo={Movie} movieId={movieId} userFrom={localStorage.getItem('userId')} />
+                </div>
+
                 {/* Movie Info */}
                 <MovieInfo movie={Movie} />
                 <br />
