@@ -15,6 +15,7 @@ function LandingPage() {
     //api를 이용해서 데이터를 가져옵니다.
     useEffect(() => {
         const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+        console.log('test');
         fetchMovies(endpoint);
     }, []);
 
@@ -60,6 +61,7 @@ function LandingPage() {
                             Movies.map((movie, index) => (
                                 <React.Fragment key={index}>
                                     <GridCards
+                                        landingPage
                                         image={movie.poster_path ? `${IMAGE_BASE_URL}w500/${movie.poster_path}` : null}
                                         movieId={movie.id}
                                         movieName={movie.original_title}
